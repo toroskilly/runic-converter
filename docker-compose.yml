@@ -12,9 +12,11 @@ services:
     command: >
       sh -c "
       apt-get update && apt-get install -y git &&
-      git clone https://github.com/toroskilly/runic-converter.git /app &&
-      cd /app &&
+      rm -rf /tmp/runic-converter &&
+      git clone https://github.com/toroskilly/runic-converter.git /tmp/runic-converter &&
+      cp -r /tmp/runic-converter/* /app/ &&
       pip install --no-cache-dir -r requirements.txt &&
       python app.py
       "
     restart: unless-stopped
+
