@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import logging
 
-from runic_converter import RunicConverter, RuneSystem
+from runic_converter import RuneConverter, RuneSystem
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend integration
