@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import re
-from typing import Dict, List, Optional, Tuple
+from typing import Dict
 from enum import Enum
 
 class RuneSystem(Enum):
