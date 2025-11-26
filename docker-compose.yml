@@ -3,11 +3,12 @@ version: '3.8'
 services:
   runic-converter:
     image: python:3.9-slim
-    ports:
-      - "5001:5000"
+    network_mode: "host"
     environment:
       - FLASK_ENV=production
       - FLASK_APP=app.py
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_RUN_PORT=5001
     working_dir: /app
     command: >
       sh -c "
@@ -19,4 +20,5 @@ services:
       python app.py
       "
     restart: unless-stopped
+
 
