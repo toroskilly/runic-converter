@@ -4,25 +4,224 @@
     <title>Runic Converter</title>
     <meta charset="UTF-8">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .converter { margin: 20px 0; }
-        textarea { width: 100%; height: 100px; margin: 10px 0; }
-        .results { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
-        .runic-text { font-size: 1.2em; margin: 10px 0; }
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 { 
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .converter-section { 
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        h2 {
+            color: #555;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            font-size: 1.5em;
+        }
+        
+        textarea { 
+            width: 100%; 
+            height: 120px; 
+            margin: 10px 0;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 5px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .results { 
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .runic-text { 
+            font-size: 1.8em;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            color: #333;
+        }
+        
+        .system-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #c62828;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #2e7d32;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .copy-btn {
+            background: #4caf50;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+        
+        .copy-btn:hover {
+            background: #45a049;
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+            margin: 40px 0;
+        }
+        
+        @media (max-width: 600px) {
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Runic Text Converter</h1>
-    <div class="converter">
-        <textarea id="inputText" placeholder="Enter text to convert to runes..."></textarea>
-        <button onclick="convertText()">Convert to Runes</button>
-        <div id="results"></div>
+    <div class="container">
+        <h1>⚔️ Runic Text Converter ⚔️</h1>
+        
+        <div class="info-box">
+            <h3>📜 About Runic Writing</h3>
+            <p>Convert modern text to historical runic alphabets used by Germanic peoples from the 2nd to 15th centuries. 
+            Each system represents different regions and time periods of Northern European history.</p>
+        </div>
+        
+        <!-- Encode Section -->
+        <div class="converter-section">
+            <h2><span class="section-icon">📝</span> Text to Runes (Encode)</h2>
+            <textarea id="inputText" placeholder="Enter text to convert to runes... Try your name or a message!"></textarea>
+            <div class="button-group">
+                <button onclick="convertText()">🔮 Convert to All Rune Systems</button>
+                <button onclick="clearEncode()">🗑️ Clear</button>
+            </div>
+            <div id="encodeResults"></div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Decode Section -->
+        <div class="converter-section">
+            <h2><span class="section-icon">🔍</span> Runes to Text (Decode)</h2>
+            <textarea id="runicInput" placeholder="Paste runic text here to decode back to Latin alphabet..."></textarea>
+            <div class="button-group">
+                <button onclick="decodeRunes()">📖 Decode Runes</button>
+                <button onclick="clearDecode()">🗑️ Clear</button>
+            </div>
+            <div id="decodeResults"></div>
+        </div>
     </div>
 
     <script>
         async function convertText() {
             const text = document.getElementById('inputText').value;
-            const resultsDiv = document.getElementById('results');
+            const resultsDiv = document.getElementById('encodeResults');
+            
+            if (!text.trim()) {
+                resultsDiv.innerHTML = '<div class="error">Please enter some text to convert.</div>';
+                return;
+            }
+            
+            resultsDiv.innerHTML = '<div class="info-box">Converting...</div>';
             
             try {
                 const response = await fetch('/api/convert', {
@@ -34,19 +233,108 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    let html = '<div class="results"><h3>Conversions:</h3>';
+                    let html = '<div class="success">✅ Conversion successful!</div>';
+                    html += '<div class="results"><h3>Runic Conversions:</h3>';
+                    
                     Object.entries(data.conversions).forEach(([system, runic]) => {
-                        html += `<div><strong>${system}:</strong><div class="runic-text">${runic}</div></div>`;
+                        const systemId = system.replace(/[^a-zA-Z0-9]/g, '_');
+                        html += `
+                            <div style="margin-bottom: 20px;">
+                                <div class="system-name">${system}</div>
+                                <div class="runic-text" id="${systemId}">${runic}</div>
+                                <button class="copy-btn" onclick="copyToClipboard('${systemId}', this)">📋 Copy</button>
+                            </div>
+                        `;
                     });
                     html += '</div>';
                     resultsDiv.innerHTML = html;
                 } else {
-                    resultsDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                    resultsDiv.innerHTML = `<div class="error">❌ Error: ${data.error}</div>`;
                 }
             } catch (error) {
-                resultsDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                resultsDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
             }
         }
+        
+        async function decodeRunes() {
+            const runicText = document.getElementById('runicInput').value;
+            const resultsDiv = document.getElementById('decodeResults');
+            
+            if (!runicText.trim()) {
+                resultsDiv.innerHTML = '<div class="error">Please enter runic text to decode.</div>';
+                return;
+            }
+            
+            resultsDiv.innerHTML = '<div class="info-box">Decoding...</div>';
+            
+            try {
+                const response = await fetch('/api/transliterate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({runic_text: runicText})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    let html = '<div class="success">✅ Decoding successful!</div>';
+                    html += '<div class="results">';
+                    html += '<h3>Decoded Text:</h3>';
+                    html += `<div class="runic-text" id="decodedText" style="font-size: 1.2em; background: #e8f5e9;">${data.transliteration}</div>`;
+                    html += '<button class="copy-btn" onclick="copyToClipboard(\'decodedText\', this)">📋 Copy Decoded Text</button>';
+                    html += '</div>';
+                    html += '<div class="info-box" style="margin-top: 15px;">';
+                    html += '<strong>Note:</strong> Decoding is approximate. Many runes represent multiple sounds, and the exact pronunciation depends on the historical context and dialect.';
+                    html += '</div>';
+                    resultsDiv.innerHTML = html;
+                } else {
+                    resultsDiv.innerHTML = `<div class="error">❌ Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        function copyToClipboard(elementId, button) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('Failed to copy text. Please select and copy manually.');
+            });
+        }
+        
+        function clearEncode() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('encodeResults').innerHTML = '';
+        }
+        
+        function clearDecode() {
+            document.getElementById('runicInput').value = '';
+            document.getElementById('decodeResults').innerHTML = '';
+        }
+        
+        // Allow Enter key to trigger conversion (Shift+Enter for new line)
+        document.getElementById('inputText').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                convertText();
+            }
+        });
+        
+        document.getElementById('runicInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                decodeRunes();
+            }
+        });
     </script>
 </body>
 </html>
