@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Dict
+from typing import Dict, Tuple
 from enum import Enum
 
 class RuneSystem(Enum):
@@ -25,6 +25,7 @@ class RuneConverter:
         self._init_anglo_saxon()
         self._init_medieval()
         self._init_staveless()
+        self._init_phonetic_mappings()
         
     def _init_elder_futhark(self):
         """
@@ -278,32 +279,102 @@ class RuneConverter:
             'u': '╮',
             'v': '╮',
             'w': '╮',
-            'th': 'ו',
-            'þ': 'ו',
+            'th': '×',
+            'þ': '×',
             'o': 'ˎ',
             'r': '◟',
-            'k': 'ᛍ',
-            'g': 'ᛍ',
-            'c': 'ᛍ',
+            'k': 'ᛐ',
+            'g': 'ᛐ',
+            'c': 'ᛐ',
             'h': 'ᚽ',
             'n': '⸜',
             'i': 'ᛁ',
             'e': 'ᛁ',
             'y': 'ᛁ',
             'j': 'ᛁ',
-            'a': '⸝',
+            'a': '⸗',
             'ʀ': '⡄',
             's': '╵',
             'z': '╵',
-            't': '⸍',
-            'd': '⸍',
-            'b': 'ި',
-            'p': 'ި',
+            't': '⸌',
+            'd': '⸌',
+            'b': 'ᛨ',
+            'p': 'ᛨ',
             'm': '⠃',
             'l': '⸌',
             
             ' ': ' ',
             '.': '×',
+        }
+        
+    def _init_phonetic_mappings(self):
+        """
+        Initialize phonetic/IPA mappings for each rune
+        Maps runes to their pronunciation guide
+        """
+        self.rune_phonetics = {
+            # Elder Futhark phonetics
+            'ᚠ': ('f', '[f]', 'like "f" in "fish"'),
+            'ᚢ': ('u/v/w', '[u/w]', 'like "oo" in "food" or "w" in "water"'),
+            'ᚦ': ('th', '[θ/ð]', 'like "th" in "thing" or "this"'),
+            'ᚨ': ('a', '[a:]', 'like "a" in "father"'),
+            'ᚱ': ('r', '[r]', 'rolled "r" sound'),
+            'ᚲ': ('k/c', '[k]', 'like "k" in "king"'),
+            'ᚷ': ('g', '[g]', 'like "g" in "give"'),
+            'ᚹ': ('w/v', '[w]', 'like "w" in "water"'),
+            'ᚺ': ('h', '[h]', 'like "h" in "house"'),
+            'ᚾ': ('n', '[n]', 'like "n" in "name"'),
+            'ᛁ': ('i/e', '[i:]', 'like "ee" in "see"'),
+            'ᛃ': ('j/y', '[j]', 'like "y" in "year"'),
+            'ᛇ': ('ï/y', '[i:/eo]', 'like "ee" or "ay-oh"'),
+            'ᛈ': ('p', '[p]', 'like "p" in "pot"'),
+            'ᛉ': ('z/x', '[z/ks]', 'like "z" or "ks"'),
+            'ᛊ': ('s', '[s]', 'like "s" in "sun"'),
+            'ᛏ': ('t/d', '[t]', 'like "t" in "time"'),
+            'ᛒ': ('b/p', '[b]', 'like "b" in "bird"'),
+            'ᛖ': ('e', '[e:]', 'like "a" in "day"'),
+            'ᛗ': ('m', '[m]', 'like "m" in "mother"'),
+            'ᛚ': ('l', '[l]', 'like "l" in "love"'),
+            'ᛜ': ('ng', '[ŋ]', 'like "ng" in "sing"'),
+            'ᛞ': ('d', '[d]', 'like "d" in "day"'),
+            'ᛟ': ('o', '[o:]', 'like "o" in "oath"'),
+            
+            # Younger Futhark specific
+            'ᚬ': ('o/ą', '[o:/ã]', 'like "o" in "oath" or nasal "a"'),
+            'ᛅ': ('a/æ', '[a/æ]', 'like "a" in "cat"'),
+            'ᚴ': ('k/g/c', '[k/g]', 'like "k" or "g"'),
+            'ᚼ': ('h', '[h]', 'like "h" in "house"'),
+            'ᛋ': ('s/z', '[s]', 'like "s" in "sun"'),
+            'ᛘ': ('m', '[m]', 'like "m" in "man"'),
+            'ᛦ': ('ʀ', '[ʀ/R]', 'like final "r" in Old Norse'),
+            
+            # Short-twig variants
+            'ᚭ': ('o', '[o:]', 'like "o" in "oath"'),
+            'ᛆ': ('a', '[a]', 'like "a" in "father"'),
+            'ᚽ': ('h', '[h]', 'like "h" in "house"'),
+            'ᚿ': ('n', '[n]', 'like "n" in "name"'),
+            'ᛌ': ('s', '[s]', 'like "s" in "sun"'),
+            'ᛐ': ('t/d', '[t/d]', 'like "t" or "d"'),
+            'ᛓ': ('b/p', '[b/p]', 'like "b" or "p"'),
+            'ᛙ': ('m', '[m]', 'like "m" in "mother"'),
+            'ᛧ': ('ʀ', '[ʀ]', 'final "r" sound'),
+            
+            # Anglo-Saxon specific
+            'ᚩ': ('o', '[o]', 'like "o" in "hot"'),
+            'ᚳ': ('c/k/ch', '[k/tʃ]', 'like "k" or "ch"'),
+            'ᚻ': ('h', '[h/x]', 'like "h" or German "ch"'),
+            'ᛄ': ('j/g/y', '[j/g]', 'like "y" in "year"'),
+            'ᛝ': ('ng', '[ŋg]', 'like "ng" in "finger"'),
+            'ᚪ': ('a', '[æ:]', 'like "a" in "ash"'),
+            'ᚫ': ('æ', '[æ]', 'like "a" in "cat"'),
+            'ᚣ': ('y', '[y]', 'like German "ü"'),
+            'ᛡ': ('ia/io', '[i̯a/i̯o]', 'like "ya" or "yo"'),
+            'ᛠ': ('ea', '[æ:a]', 'like "ay-ah"'),
+            
+            # Punctuation
+            '᛬': ('.', '', 'word separator'),
+            '᛭': (':', '', 'phrase separator'),
+            ' ': (' ', '', 'space'),
         }
     
     def _preprocess_text(self, text: str, system: RuneSystem) -> str:
@@ -418,29 +489,45 @@ class RuneConverter:
                 results[system.value] = f"Error: {str(e)}"
         return results
     
-    def transliterate_runes(self, runic_text: str) -> str:
+    def transliterate_runes(self, runic_text: str) -> Dict[str, str]:
         """
-        Attempt to transliterate runic text back to Latin alphabet
-        Note: This is approximate as many runes represent multiple sounds
+        Transliterate runic text to phonetic representation
+        Returns both Latin approximation and IPA/pronunciation guide
+        
+        Args:
+            runic_text: Text containing runic characters
+            
+        Returns:
+            Dictionary with 'latin', 'ipa', and 'pronunciation' keys
         """
-        # Create reverse mapping (rune -> letter)
-        reverse_map = {}
+        latin_result = []
+        ipa_result = []
+        pronunciation_notes = []
+        seen_runes = set()
         
-        # Build from Elder Futhark as base
-        for letter, rune in self.elder_futhark.items():
-            if rune not in reverse_map and len(letter) == 1:
-                reverse_map[rune] = letter
-        
-        # Transliterate
-        result = []
         for char in runic_text:
-            if char in reverse_map:
-                result.append(reverse_map[char])
+            if char in self.rune_phonetics:
+                latin, ipa, note = self.rune_phonetics[char]
+                latin_result.append(latin)
+                if ipa:
+                    ipa_result.append(ipa)
+                if note and char not in seen_runes:
+                    pronunciation_notes.append(f"{char} = {note}")
+                    seen_runes.add(char)
             elif char == ' ':
-                result.append(' ')
-            elif char in '᛬᛭':
-                result.append('.')
+                latin_result.append(' ')
+                ipa_result.append(' ')
+            elif char.isdigit() or char in '!?()[]{}@#$%^&*+=/<>\\|`~':
+                latin_result.append(char)
+                ipa_result.append(char)
             else:
-                result.append(f'[{char}]')
+                # Unknown character
+                latin_result.append(f'[{char}]')
+                ipa_result.append(f'[{char}]')
         
-        return ''.join(result)
+        return {
+            'latin': ''.join(latin_result),
+            'ipa': ''.join(ipa_result),
+            'pronunciation_guide': '\n'.join(pronunciation_notes) if pronunciation_notes else 'No special pronunciation notes',
+            'note': 'Multiple letters may map to the same rune. The transliteration shows possible sounds.'
+        }
