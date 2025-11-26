@@ -12,18 +12,27 @@ logging.basicConfig(level=logging.INFO)
 
 class RunicConverterAPI:
     def __init__(self):
-        # Initialize your converter here
-        # self.converter = RunicConverter()
-        pass
+        # Initialize the converter - THIS WAS THE MISSING PART
+        self.converter = RuneConverter()
     
     def convert_text(self, text, system=None):
         """Convert text to runic script(s)"""
         try:
             if system:
                 # Convert to specific runic system
-                return self.converter.convert(text, system)
+                # First need to get the RuneSystem enum from the string
+                system_enum = None
+                for rs in RuneSystem:
+                    if rs.value == system:
+                        system_enum = rs
+                        break
+                
+                if system_enum:
+                    return {system: self.converter.convert(text, system_enum)}
+                else:
+                    raise ValueError(f"Unknown runic system: {system}")
             else:
-                # Convert to all systems as shown in your script [1]
+                # Convert to all systems
                 return self.converter.convert_all_systems(text)
         except Exception as e:
             raise Exception(f"Conversion error: {str(e)}")
@@ -77,15 +86,60 @@ def get_systems():
 @app.route('/api/info', methods=['GET'])
 def get_info():
     """Get converter information"""
-    # Based on the info displayed in your script [1]
     info = {
+        'title': 'Historical Runic Writing Systems Converter',
+        'description': 'Convert modern English text to various historical runic alphabets',
         'note': 'Runic writing was phonetic - spell words as they sound!',
+        'systems': {
+            'Elder Futhark': '24 runes, 2nd-8th century, Proto-Germanic',
+            'Younger Futhark': '16 runes, 9th-11th century, Viking Age',
+            'Short-Twig': 'Swedish-Norwegian variant of Younger Futhark',
+            'Anglo-Saxon Futhorc': '28-33 runes, 5th-11th century, used in England',
+            'Medieval': 'Post-1100, Latinized Futhark',
+            'Staveless': 'Simplified forms used in Hälsingland, Sweden'
+        },
         'examples': [
             "The letter 'X' becomes 'KS'",
-            "'TH' is a single rune"
+            "'TH' is a single rune (þ - thorn)",
+            "'QU' becomes 'KW'",
+            "Double letters are often simplified",
+            "Numbers and special characters are preserved"
+        ],
+        'tips': [
+            'Try your name first!',
+            'Historical inscriptions often omitted vowels',
+            'Runes were carved in stone, wood, or metal',
+            'Each rune had a name and symbolic meaning'
         ]
     }
     return jsonify(info)
 
-if __name__ == '__main__':
+@app.route('/api/transliterate', methods=['POST'])
+def transliterate():
+    """API endpoint for transliterating runes back to Latin alphabet"""
+    try:
+        data = request.get_json()
+        
+        if not data or 'runic_text' not in data:
+            return jsonify({'error': 'Runic text is required'}), 400
+        
+        runic_text = data['runic_text'].strip()
+        
+        if not runic_text:
+            return jsonify({'error': 'Runic text cannot be empty'}), 400
+        
+        # Transliterate using the converter
+        result = converter_api.converter.transliterate_runes(runic_text)
+        
+        return jsonify({
+            'success': True,
+            'runic_text': runic_text,
+            'transliteration': result
+        })
+        
+    except Exception as e:
+        app.logger.error(f"Transliteration error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+        
+    if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
